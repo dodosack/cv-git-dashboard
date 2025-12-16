@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import ProfileCard from './components/ProfileCard.vue'
 import SkillBadge from './components/SkillBadge.vue'
 import TerminalWindow from './components/TerminalWindow.vue'  // ← NEU
-
+import GitHubRepos from './components/GitHubRepos.vue'  // ← NEU
 const isDarkMode = ref(true)
 
 const toggleTheme = () => {
@@ -115,12 +115,14 @@ const toggleTheme = () => {
             </p>
             <p class="terminal-output success">☕ Brewing...</p>
           </TerminalWindow>
-
+          
         </div>
       </div>
-
+      
     </main>
   </div>
+  <!-- GitHub Repos Section -->
+<GitHubRepos username="Dodosack" :max-repos="6" />
 </template>
 
 <style scoped>
