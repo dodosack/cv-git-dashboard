@@ -33,4 +33,5 @@ coverage
 /cypress/screenshots/
 
 # Vitest
-__screenshots__/
+package.json/*
+package-lock.json
