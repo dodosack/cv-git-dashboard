@@ -1,22 +1,20 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import ProfileCard from './components/ProfileCard.vue'
+import SkillBadge from './components/SkillBadge.vue'
+import TerminalWindow from './components/TerminalWindow.vue'  // ← NEU
 
-// Reaktive Variable für Dark Mode
-// ref() macht eine Variable "reaktiv" - Vue aktualisiert die Ansicht automatisch
 const isDarkMode = ref(true)
 
-// Funktion zum Umschalten
 const toggleTheme = () => {
   isDarkMode.value = !isDarkMode.value
 }
 </script>
 
 <template>
-  <!-- :class bindet CSS-Klassen dynamisch -->
-  <!-- Wenn isDarkMode true ist, wird 'dark' als Klasse hinzugefügt -->
   <div :class="{ dark: isDarkMode }" class="app-container">
-
-    <!-- Header mit Toggle-Button -->
+    
+    <!-- Header -->
     <header class="dashboard-header">
       <div class="header-content">
         <h1>// DEVELOPER.DASHBOARD</h1>
@@ -26,35 +24,107 @@ const toggleTheme = () => {
       </div>
     </header>
 
-    <!-- Main Content Area -->
     <main class="dashboard-main">
-      <div class="terminal-window">
-        <div class="terminal-header">
-          <span class="terminal-button red"></span>
-          <span class="terminal-button yellow"></span>
-          <span class="terminal-button green"></span>
-          <span class="terminal-title">terminal</span>
-        </div>
-        <div class="terminal-body">
-          <p class="terminal-line">
-            <span class="prompt">$</span>
-            <span class="command">whoami</span>
-          </p>
-          <p class="terminal-output">Dein Name hier</p>
-          <p class="terminal-line">
-            <span class="prompt">$</span>
-            <span class="command">cat skills.txt</span>
-          </p>
-          <p class="terminal-output">Vue.js | TypeScript | Git</p>
+      
+      <!-- Cards Grid - Erste Reihe -->
+      <div class="cards-grid">
+        
+        <!-- Profile Card -->
+        <ProfileCard 
+          name="DODOSACK"
+          role="Full Stack Binge Watcher"
+          status="Studying"
+          status-color="#ff5f56"
+        />
+
+        <!-- Skills Section -->
+        <div class="skills-section">
+          <h3 class="section-title">// SKILLS</h3>
+          <div class="skills-grid">
+            <SkillBadge name="Vue.js" :level="4" category="Frontend" />
+            <SkillBadge name="TypeScript" :level="3" category="Language" />
+            <SkillBadge name="Git" :level="4" category="Tools" />
+            <SkillBadge name="CSS" :level="3" category="Frontend" />
+          </div>
         </div>
       </div>
-    </main>
 
+      <!-- Terminal Section -->
+      <div class="terminal-section">
+        <h2 class="section-header">// SYSTEM_INFO</h2>
+        
+        <div class="terminal-grid">
+          
+          <!-- Terminal 1: About Me -->
+          <TerminalWindow title="whoami.sh">
+            <p class="terminal-line">
+              <span class="prompt">$</span>
+              <span class="command">cat about.txt</span>
+            </p>
+            <p class="terminal-output">
+              Hey! Ich bin ein Developer in Ausbildung.<br>
+              Aktuell lerne ich Vue.js und TypeScript!
+            </p>
+            <p class="terminal-line">
+              <span class="prompt">$</span>
+              <span class="command">echo $INTERESTS</span>
+            </p>
+            <p class="terminal-output success">
+              Web Development | Binge Watching | Coffee ☕
+            </p>
+          </TerminalWindow>
+
+          <!-- Terminal 2: Current Status -->
+          <TerminalWindow title="status.sh">
+            <p class="terminal-line">
+              <span class="prompt">$</span>
+              <span class="command">git status</span>
+            </p>
+            <p class="terminal-output">
+              On branch main<br>
+              Your branch is up to date.
+            </p>
+            <p class="terminal-line">
+              <span class="prompt">$</span>
+              <span class="command">npm run dev</span>
+            </p>
+            <p class="terminal-output success">
+              ✓ Server running at http://localhost:5173
+            </p>
+            <p class="comment">// Learning Vue.js one component at a time...</p>
+          </TerminalWindow>
+
+          <!-- Terminal 3: Commands -->
+          <TerminalWindow title="commands.sh">
+            <p class="terminal-line">
+              <span class="prompt">$</span>
+              <span class="command">help</span>
+            </p>
+            <p class="terminal-output">
+              Available commands:
+            </p>
+            <p class="terminal-output">
+              → portfolio    (View my projects)<br>
+              → skills       (List my abilities)<br>
+              → contact      (Get in touch)<br>
+              → coffee       (Brew some motivation)
+            </p>
+            <p class="terminal-line">
+              <span class="prompt">$</span>
+              <span class="command">coffee</span>
+            </p>
+            <p class="terminal-output success">☕ Brewing...</p>
+          </TerminalWindow>
+
+        </div>
+      </div>
+
+    </main>
   </div>
 </template>
 
 <style scoped>
-/* Root Variablen für Farben - wie Einstellungen */
+/* Root Variablen */
 .app-container {
   --bg-color: #ffffff;
   --text-color: #333333;
@@ -66,7 +136,6 @@ const toggleTheme = () => {
   transition: all 0.3s ease;
 }
 
-/* Dark Mode Farben */
 .app-container.dark {
   --bg-color: #0d1117;
   --text-color: #c9d1d9;
@@ -74,7 +143,7 @@ const toggleTheme = () => {
   --terminal-text: #58a6ff;
 }
 
-/* Header Styling */
+/* Header */
 .dashboard-header {
   background: var(--terminal-bg);
   border-bottom: 1px solid #30363d;
@@ -119,64 +188,52 @@ const toggleTheme = () => {
   padding: 0 2rem;
 }
 
-/* Terminal Window */
-.terminal-window {
+/* Section Headers */
+.section-header {
+  color: var(--terminal-text);
+  font-family: 'Courier New', monospace;
+  font-size: 1.3rem;
+  margin: 2rem 0 1rem 0;
+  padding-left: 0.5rem;
+  border-left: 3px solid var(--terminal-text);
+}
+
+/* Cards Grid */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.skills-section {
   background: var(--terminal-bg);
   border: 1px solid #30363d;
   border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-
-.terminal-header {
-  background: #21262d;
-  padding: 0.5rem 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.terminal-button {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.terminal-button.red { background: #ff5f56; }
-.terminal-button.yellow { background: #ffbd2e; }
-.terminal-button.green { background: #27c93f; }
-
-.terminal-title {
-  margin-left: auto;
-  color: #8b949e;
-  font-size: 0.9rem;
-  font-family: monospace;
-}
-
-.terminal-body {
   padding: 1.5rem;
-  font-family: 'Courier New', monospace;
-  font-size: 1rem;
-  line-height: 1.6;
 }
 
-.terminal-line {
-  margin: 0.5rem 0;
-}
-
-.prompt {
+.section-title {
   color: #58a6ff;
-  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  font-size: 1.2rem;
+  margin: 0 0 1rem 0;
 }
 
-.command {
-  color: #7ee787;
-  margin-left: 0.5rem;
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
 }
 
-.terminal-output {
-  color: var(--text-color);
-  margin: 0.25rem 0 1rem 1.5rem;
+/* Terminal Section */
+.terminal-section {
+  margin-top: 2rem;
+}
+
+.terminal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
 }
 </style>
