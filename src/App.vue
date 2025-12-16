@@ -4,6 +4,7 @@ import ProfileCard from './components/ProfileCard.vue'
 import SkillBadge from './components/SkillBadge.vue'
 import TerminalWindow from './components/TerminalWindow.vue'  // ← NEU
 import GitHubRepos from './components/GitHubRepos.vue'  // ← NEU
+import NewsWidget from './components/NewsWidget.vue'  // ← NEU
 const isDarkMode = ref(true)
 
 const toggleTheme = () => {
@@ -123,6 +124,11 @@ const toggleTheme = () => {
   </div>
   <!-- GitHub Repos Section -->
 <GitHubRepos username="Dodosack" :max-repos="6" />
+
+<!-- News Section -->
+<NewsWidget category="technology" :max-articles="4" />
+
+
 </template>
 
 <style scoped>
